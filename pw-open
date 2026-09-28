@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Открыть сайт в Playwright WebKit (из любой точки WSL).
-# Установка один раз: tools/playwright-webkit/setup.sh
+# Установка один раз: ~/tools/playwright-webkit/setup.sh (см. README.md)
 #
 #   pw-open <url> <device>
 #   SITE_URL=… DEVICE=… pw-open
