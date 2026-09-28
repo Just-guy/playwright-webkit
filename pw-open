@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Открыть сайт в Playwright WebKit (из любой точки WSL).
+# Установка один раз: tools/playwright-webkit/setup.sh
+#
+#   pw-open <url> <device>
+#   SITE_URL=… DEVICE=… pw-open
+set -euo pipefail
+
+# Реальный каталог скрипта (не symlink в ~/.local/bin)
+ROOT="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+cd "$ROOT"
+
+if [[ ! -d "$ROOT/node_modules/playwright" ]]; then
+	echo "Playwright не установлен. Один раз выполните:" >&2
+	echo "  $ROOT/setup.sh" >&2
+	exit 1
+fi
+
+usage() {
+	echo "Использование:" >&2
+	echo "  pw-open <url> <device>" >&2
+	echo "  SITE_URL=… DEVICE=… pw-open" >&2
+	echo "Пример: pw-open http://localhost/ \"iPhone 13\"" >&2
+	echo "Переменные: DPR (по умолчанию 1), PAUSE=1" >&2
+	exit 1
+}
+
+# Аргументы: url и/или device (то, чего ещё нет в env)
+while [[ $# -gt 0 ]]; do
+	arg="$1"
+	shift
+	if [[ "$arg" == http://* || "$arg" == https://* ]]; then
+		export SITE_URL="$arg"
+	elif [[ -z "${DEVICE:-}" ]]; then
+		export DEVICE="$arg"
+	else
+		echo "Лишний аргумент: $arg" >&2
+		usage
+	fi
+done
+
+if [[ -z "${SITE_URL:-}" || -z "${DEVICE:-}" ]]; then
+	usage
+fi
+
+exec node open.mjs

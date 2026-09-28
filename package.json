@@ -1,0 +1,14 @@
+{
+  "name": "espclub-playwright-webkit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ручная проверка сайта в Playwright WebKit (≈ Safari) через WSLg",
+  "type": "commonjs",
+  "scripts": {
+    "open": "node open.mjs",
+    "setup": "bash setup.sh"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}
